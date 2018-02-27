@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AG Option</string>
+    <string name="item_adicionar_veiculo">Adicionar Veículo</string>
+    <string name="item_sair">Sair</string>
+    <string name="title_activity_lista_veiculos">ListaVeiculosActivity</string>
+    <string name="item_redefinir">Redefinir configurações</string>
+</resources>

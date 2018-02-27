@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cor_bk_padrao">#9CCC65</color>
+    <color name="cor_bk_padrao_dark">#1B5E20</color>
+    <color name="cor_txt_padrao">#ecf0f1</color>
+    <color name="cor_btn_padrao_dark">#1B5E20</color>
+    <color name="cor_bk_padrao_2">#d4d9d8</color>
+</resources>

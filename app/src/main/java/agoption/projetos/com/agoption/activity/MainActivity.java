@@ -293,6 +293,8 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 Preferencias preferencias = new Preferencias(MainActivity.this);
                 preferencias.SalvarDados("Veículo Padrão" , "0.70");
 
+                toolbar.setTitle(preferencias.getVeiculoPadrao());
+
                 Toast.makeText(MainActivity.this, "Processo concluído com sucesso!", Toast.LENGTH_SHORT).show();
             }
         });
