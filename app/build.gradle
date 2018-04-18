@@ -6,8 +6,8 @@ android {
         applicationId "agoption.projetos.com.agoption"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 102
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -28,6 +28,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
-
+    compile 'com.google.android.gms:play-services-ads:11.8.0'
     testCompile 'junit:junit:4.12'
 }

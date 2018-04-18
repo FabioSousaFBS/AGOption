@@ -26,6 +26,11 @@ import agoption.projetos.com.agoption.helper.Preferencias;
 import agoption.projetos.com.agoption.util.Utilities;
 import android.media.MediaPlayer;
 
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+
 //recursos de reconhecimento de voz
 import android.speech.RecognizerIntent;
 import android.hardware.Sensor;
@@ -33,6 +38,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -47,12 +53,12 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
     private DatabaseHelper helper;
     private Toolbar toolbar;
 
-
     private static final Locale LOCAL = new Locale("pt","BR");
 
     private boolean bUsouComandoVoz = false;
     private MediaPlayer player;
     private AlertDialog.Builder dialog;
+    private AdView mAdView;
 
     private String[] permissoesNecessarias = new String[]{
             Manifest.permission.INTERNET,
@@ -74,6 +80,16 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imgBtnVoz = (ImageView) findViewById(R.id.imgComandoVoz_main);
         btnCalcular = (Button) findViewById(R.id.btnCalcular);
+        mAdView = (AdView) findViewById(R.id.adView);
+
+        MobileAds.initialize(this,"ca-app-pub-5159756121883000~5320147976");
+
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.LARGE_BANNER);
+        adView.setAdUnitId("ca-app-pub-5159756121883000/8656757750");
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         //INSTANCIA DO BANCO
         helper = new DatabaseHelper(this);
@@ -170,28 +186,33 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         double dblPrecoGasolina;
         double dblFator;
 
-        Preferencias preferencias = new Preferencias(MainActivity.this);
+        if ( !edtPrecoAlcool.getText().toString().isEmpty()  && !edtPrecoGasolina.getText().toString().isEmpty() ){
 
-        dblFator = Double.parseDouble(preferencias.getFatorVeiculoPadrao());
-        dblPrecoEtanol = Double.parseDouble(edtPrecoAlcool.getText().toString());
-        dblPrecoGasolina = Double.parseDouble(edtPrecoGasolina.getText().toString());
+            Preferencias preferencias = new Preferencias(MainActivity.this);
+            DecimalFormat formatoDecimal = new DecimalFormat("#,##0.00");
 
-        dblResultado = dblPrecoEtanol / dblPrecoGasolina;
 
-        if (dblResultado < dblFator){
-            if (bUsouComandoVoz == true) {
-                player = MediaPlayer.create(MainActivity.this, R.raw.audio_etanol);
-                TocarSom();
-                bUsouComandoVoz = false;
+            dblFator = Double.parseDouble(preferencias.getFatorVeiculoPadrao());
+            dblPrecoEtanol = Double.parseDouble(edtPrecoAlcool.getText().toString());
+            dblPrecoGasolina = Double.parseDouble(edtPrecoGasolina.getText().toString());
+
+            dblResultado = dblPrecoEtanol / dblPrecoGasolina;
+
+            if (dblResultado < dblFator){
+                if (bUsouComandoVoz == true) {
+                    player = MediaPlayer.create(MainActivity.this, R.raw.audio_etanol);
+                    TocarSom();
+                    bUsouComandoVoz = false;
+                }
+                tvResultado.setText("Resultado: " + formatoDecimal.format(dblResultado) + "\nAbasteça com Etanol!");
+            }else{
+                if (bUsouComandoVoz == true) {
+                    player = MediaPlayer.create(MainActivity.this, R.raw.audio_gasolina);
+                    TocarSom();
+                    bUsouComandoVoz = false;
+                }
+                tvResultado.setText("Resultado: " + formatoDecimal.format(dblResultado) + "\nAbasteça com Gasolina!");
             }
-            tvResultado.setText("Abasteça com Etanol!");
-        }else{
-            if (bUsouComandoVoz == true) {
-                player = MediaPlayer.create(MainActivity.this, R.raw.audio_gasolina);
-                TocarSom();
-                bUsouComandoVoz = false;
-            }
-            tvResultado.setText("Abasteça com Gasolina!");
         }
     }
 
